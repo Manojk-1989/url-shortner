@@ -48,17 +48,25 @@ class UrlController extends Controller
      */
     public function store(UrlManagerRequest $request)
     {
-        $urlManager = $this->urlManager->generateShortUrl($request->url);
+        try {
+            //code...
+            $urlManager = $this->urlManager->generateShortUrl($request->url);
 
-        if ($urlManager) {
-            # code...
-            $data = ['status' => true,'status_code'=>200,'message' => 'Succesfully shorten the given url'];
-            return response()->json(['results'=> $data]);
-        } else {
-            # code...
-            $data = ['status' => false,'status_code'=>200,'message' => 'Something went wrong'];
+            if ($urlManager) {
+                # code...
+                $data = ['status' => true,'status_code'=>200,'message' => 'Succesfully shorten the given url'];
+                return response()->json(['results'=> $data]);
+            } else {
+                # code...
+                $data = ['status' => false,'status_code'=>200,'message' => 'Something went wrong'];
+                return response()->json(['results'=> $data]);
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+            $data = ['status' => false,'status_code'=>200,'message' => $th->getMessage()];
             return response()->json(['results'=> $data]);
         }
+        
         
     }
 
